@@ -1,0 +1,39 @@
+@use 'var' as *;
+#root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+.big-square {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+
+    border-radius: 10px;
+    border: 1px solid $green;
+}
+.small-square {
+    min-height: 101px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $green;
+    & > svg {
+        width: 64px;
+        height: 64px;
+        pointer-events: none;
+    }
+}
+.small-square:nth-child(1) {
+    border-top-left-radius: 10px;
+}
+.small-square:nth-child(3) {
+    border-top-right-radius: 10px;
+}
+.small-square:nth-child(7) {
+    border-bottom-left-radius: 10px;
+}
+.small-square:nth-child(9) {
+    border-bottom-right-radius: 10px;
+}
