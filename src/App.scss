@@ -1,9 +1,17 @@
 @use 'var' as *;
 #root {
     max-width: 1280px;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
     margin: 0 auto;
-    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    // padding: 2rem;
     text-align: center;
+    position: relative;
 }
 .big-square {
     display: grid;
@@ -14,6 +22,7 @@
     border: 1px solid $green;
 }
 .small-square {
+    min-width: 101px;
     min-height: 101px;
     display: flex;
     justify-content: center;
@@ -24,6 +33,13 @@
         height: 64px;
         pointer-events: none;
     }
+    transition: all 0.5s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    /* Предотвращаем появление контекстного меню на устройствах Apple */
+    -webkit-touch-callout: none;
+    /* Осторожно относимся к выбору контента */
+    user-select: none;
 }
 .small-square:nth-child(1) {
     border-top-left-radius: 10px;
@@ -36,4 +52,68 @@
 }
 .small-square:nth-child(9) {
     border-bottom-right-radius: 10px;
+}
+.title {
+    margin: 0;
+    font-size: 40px;
+    font-weight: 700;
+    color: $white;
+}
+.turn {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: $light-grey;
+}
+.pop-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    min-width: 100vw;
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        flex-direction: column;
+        padding: 20px 40px;
+        background-color: $black;
+        border: 1px solid $white;
+        border-radius: 10px;
+
+        -webkit-box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 0px 16px 5px rgba(0, 0, 0, 0.75);
+    }
+    &__header {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    &__btn {
+        background-color: $light-black;
+        color: $white;
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+        padding: 10px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.75);
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.75);
+
+        &:hover {
+            border: 1px solid $green;
+        }
+    }
 }
