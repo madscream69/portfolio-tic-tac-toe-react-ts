@@ -31,7 +31,114 @@ function App() {
         7: '',
         8: '',
     });
+    //AI
+    function checkWinner(board: string[]) {
+        // Проверка горизонтальных линий
+        for (let i = 0; i < 3; i++) {
+            if (
+                board[i * 3] &&
+                board[i * 3] === board[i * 3 + 1] &&
+                board[i * 3] === board[i * 3 + 2]
+            ) {
+                return board[i * 3]; // Победа на горизонтали
+            }
+        }
 
+        // Проверка вертикальных линий
+        for (let i = 0; i < 3; i++) {
+            if (
+                board[i] &&
+                board[i] === board[i + 3] &&
+                board[i] === board[i + 6]
+            ) {
+                return board[i]; // Победа на вертикали
+            }
+        }
+
+        // Проверка диагоналей
+        if (board[0] && board[0] === board[4] && board[0] === board[8]) {
+            return board[0]; // Победа на главной диагонали
+        }
+        if (board[2] && board[2] === board[4] && board[2] === board[6]) {
+            return board[2]; // Победа на побочной диагонали
+        }
+
+        // Если нет победителя
+        return null;
+    }
+
+    function minimax(
+        board: string[],
+        depth: number,
+        isMaximizingPlayer: boolean
+    ) {
+        const winner = checkWinner(board);
+        if (winner === 'cross') return -10; // Игрок (человек) выигрывает
+        if (winner === 'circle') return 10; // Робот (круг) выигрывает
+        if (board.every((cell) => cell !== '')) return 0; // Ничья
+
+        if (isMaximizingPlayer) {
+            let best = -Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = 'circle'; // Ход робота
+                    best = Math.max(best, minimax(board, depth + 1, false));
+                    board[i] = ''; // Отмена хода
+                }
+            }
+            return best;
+        } else {
+            let best = Infinity;
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = 'cross'; // Ход игрока
+                    best = Math.min(best, minimax(board, depth + 1, true));
+                    board[i] = ''; // Отмена хода
+                }
+            }
+            return best;
+        }
+    }
+
+    function findBestMove(board: string[]) {
+        let bestVal = -Infinity;
+        let bestMove = -1;
+
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = 'circle'; // Пробуем ход робота
+                let moveVal = minimax(board, 0, false);
+                board[i] = ''; // Отмена хода
+
+                if (moveVal > bestVal) {
+                    bestMove = i;
+                    bestVal = moveVal;
+                }
+            }
+        }
+
+        return bestMove;
+    }
+    function makeRobotMove() {
+        let counter = 0;
+        for (const key in combinations) {
+            if (combinations[key as keyof typeof combinations] === 'cross') {
+                counter++;
+            }
+        }
+        if (counter === 5) {
+            return;
+        }
+        if (turn === 'circle' && !finish && !draw) {
+            const bestMove = findBestMove(Object.values(combinations));
+            const target = document.getElementById(
+                bestMove.toString()
+            ) as HTMLTextAreaElement;
+            changeFigure(target);
+        }
+    }
+
+    //AI
     function changeFigure(target: HTMLTextAreaElement) {
         const key = target.id;
         if (target.children[0] === undefined) {
@@ -51,6 +158,15 @@ function App() {
         }
     }
     useEffect(() => {
+        //ai
+        setTimeout(() => {
+            if (turn === 'circle' && !finish && !draw) {
+                makeRobotMove();
+            }
+        }, 2000);
+
+        //ai
+
         if (
             (combinations[0] === 'cross' &&
                 combinations[1] === 'cross' &&
@@ -121,6 +237,7 @@ function App() {
             combinations[8].length !== 0 &&
             !finish
         ) {
+            // setFinish(true);
             setDraw(true);
         }
     }, [combinations, finish]);
@@ -186,7 +303,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -197,7 +313,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -208,7 +323,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -219,7 +333,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -230,7 +343,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -241,7 +353,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -252,7 +363,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -263,7 +373,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
                 <div
@@ -274,7 +383,6 @@ function App() {
 
                         changeFigure(target);
                         checkResult();
-                        // console.log(target.innerHTML);
                     }}
                 ></div>
             </div>
