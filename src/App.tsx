@@ -4,21 +4,21 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-regular-svg-icons';
 
 function App() {
-    const [currentId, setCurrentId] = useState(Number);
     const [turn, setTurn] = useState('cross');
     const [finish, setFinish] = useState(false);
     const [draw, setDraw] = useState(false);
     const [winner, setWinner] = useState('');
+    const [bot, setBot] = useState(false);
     type Combinations = {
-        0: string;
-        1: string;
-        2: string;
-        3: string;
-        4: string;
-        5: string;
-        6: string;
-        7: string;
-        8: string;
+        [key: number]: string;
+        // [key:number]: string;
+        // 2: string;
+        // 3: string;
+        // 4: string;
+        // 5: string;
+        // 6: string;
+        // 7: string;
+        // 8: string;
     };
     const [combinations, setCombinations] = useState<Combinations>({
         0: '',
@@ -122,7 +122,7 @@ function App() {
     function makeRobotMove() {
         let counter = 0;
         for (const key in combinations) {
-            if (combinations[key as keyof typeof combinations] === 'cross') {
+            if (combinations[key] === 'cross') {
                 counter++;
             }
         }
@@ -160,10 +160,10 @@ function App() {
     useEffect(() => {
         //ai
         setTimeout(() => {
-            if (turn === 'circle' && !finish && !draw) {
+            if (turn === 'circle' && !finish && !draw && bot) {
                 makeRobotMove();
             }
-        }, 2000);
+        }, 1000);
 
         //ai
 
@@ -241,11 +241,31 @@ function App() {
             setDraw(true);
         }
     }, [combinations, finish]);
-    function checkResult() {
-        // console.log(combinations[0]);
+    function closeChoose() {
+        document.querySelector('.choose')?.remove();
     }
     return (
         <>
+            <div className="pop-up choose">
+                <div className="pop-up__wrapper">
+                    <h4 className="pop-up__header">Choose mode:</h4>
+                    <button
+                        className="pop-up__btn"
+                        onClick={() => {
+                            setBot(true);
+                            closeChoose();
+                        }}
+                    >
+                        vs bot
+                    </button>
+                    <button
+                        className="pop-up__btn"
+                        onClick={() => closeChoose()}
+                    >
+                        1 vs 1
+                    </button>
+                </div>
+            </div>
             {draw ? (
                 <div className="pop-up">
                     <div className="pop-up__wrapper">
@@ -302,7 +322,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -312,7 +331,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -322,7 +340,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -332,7 +349,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -342,7 +358,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -352,7 +367,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -362,7 +376,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -372,7 +385,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
                 <div
@@ -382,7 +394,6 @@ function App() {
                         const target = e.target as HTMLTextAreaElement;
 
                         changeFigure(target);
-                        checkResult();
                     }}
                 ></div>
             </div>
