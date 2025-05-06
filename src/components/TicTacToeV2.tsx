@@ -106,6 +106,41 @@ const TicTacToeV2: React.FC<ClassicProps> = ({ closeChoose }) => {
         combinations[8],
         finish,
     ]);
+    const [arrForCross, setArrForCross] = useState<number[]>([]);
+    const [arrForCircle, setArrForCircle] = useState<number[]>([]);
+    function clearLast() {
+        if (arrForCross.length === 3) {
+            if (document.getElementById(`${arrForCross[0]}`)) {
+                (
+                    document.getElementById(`${arrForCross[0]}`) as HTMLElement
+                ).style.opacity = '0.5';
+            }
+        }
+        if (arrForCircle.length === 3) {
+            if (document.getElementById(`${arrForCircle[0]}`)) {
+                (
+                    document.getElementById(`${arrForCircle[0]}`) as HTMLElement
+                ).style.opacity = '0.5';
+            }
+        }
+        if (arrForCross.length === 4) {
+            let temp_arr = combinations;
+            temp_arr[arrForCross[0]] = '';
+            setCombinations(temp_arr);
+            (
+                document.getElementById(`${arrForCross[0]}`) as HTMLElement
+            ).style.opacity = '1';
+            setArrForCross(arrForCross.slice(1));
+        } else if (arrForCircle.length === 4) {
+            let temp_arr = combinations;
+            temp_arr[arrForCircle[0]] = '';
+            setCombinations(temp_arr);
+            (
+                document.getElementById(`${arrForCircle[0]}`) as HTMLElement
+            ).style.opacity = '1';
+            setArrForCircle(arrForCircle.slice(1));
+        }
+    }
     function putFigure(
         value: string,
         index: number,
@@ -119,10 +154,18 @@ const TicTacToeV2: React.FC<ClassicProps> = ({ closeChoose }) => {
             temp_arr[index] = turn;
             if (turn === 'cross') {
                 setCombinations(temp_arr);
+                let tmpArr = arrForCross;
+                tmpArr.push(index);
+                setArrForCross(tmpArr);
                 setTurn('circle');
+                clearLast();
             } else if (turn === 'circle') {
                 setCombinations(temp_arr);
+                let tmpArr = arrForCircle;
+                tmpArr.push(index);
+                setArrForCircle(tmpArr);
                 setTurn('cross');
+                clearLast();
             }
         }
     }
